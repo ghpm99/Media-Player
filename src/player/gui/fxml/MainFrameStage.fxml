@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<BorderPane styleClass="main" stylesheets="@../css/application.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="890.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane fx:id="youtubePane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="77.0" text="Link:" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                  <TextField fx:id="linkVideoTextField" layoutX="109.0" layoutY="10.0" onInputMethodTextChanged="#linkYoutubeChange" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="10.0" />
+                  <CheckBox fx:id="isEmbedCheckBox" layoutX="16.0" layoutY="48.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="87.0" text="Embed" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="48.0" />
+                  <Button layoutX="815.0" layoutY="566.0" mnemonicParsing="false" onAction="#sendYoutube" text="Enviar" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                  <ProgressBar fx:id="sendVideoProgressBar" layoutX="16.0" layoutY="570.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="95.0" />
+                  <ButtonBar fx:id="commandBarYoutube" disable="true" layoutX="16.0" layoutY="488.0" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                    <buttons>
+                      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#playYoutube" text="Play/Pause" />
+                        <Button mnemonicParsing="false" onAction="#muteYoutube" text="Mute" />
+                        <Button mnemonicParsing="false" onAction="#theaterYoutube" text="Teatro" />
+                        <Button mnemonicParsing="false" onAction="#nextYoutube" text="Proximo" />
+                        <Button mnemonicParsing="false" onAction="#increaseVolumeYoutube" text="Aumentar Volume" />
+                        <Button mnemonicParsing="false" onAction="#decreaseVolumeYoutube" text="Diminuir Volume" />
+                    </buttons>
+                  </ButtonBar>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="statusPane" layoutX="139.0" layoutY="157.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" prefHeight="18.0" prefWidth="113.0" text="IP Conectado:" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                  <TextField fx:id="ipTextField" layoutX="150.0" layoutY="10.0" onInputMethodTextChanged="#changeIpAddress" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="10.0" />
+                  <Label layoutX="14.0" layoutY="55.0" text="Status da Conexão" textFill="WHITE" />
+                  <Label fx:id="statusLabel" layoutX="150.0" layoutY="55.0" prefHeight="18.0" prefWidth="156.0" text="Desconectado" textFill="WHITE" />
+                  <Button layoutX="14.0" layoutY="566.0" mnemonicParsing="false" onAction="#requestIdleView" text="Modo espera" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+                  <Button layoutX="810.0" layoutY="566.0" mnemonicParsing="false" onAction="#requestTurnOff" text="Desligar" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="mediaPane" layoutX="67.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ListView fx:id="mediaFilesList" layoutX="14.0" layoutY="73.0" onMouseClicked="#runMediaFile" prefHeight="420.0" prefWidth="862.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="73.0" />
+                  <Button layoutX="813.0" layoutY="504.0" mnemonicParsing="false" onAction="#updateMediaFileList" text="Atualizar" />
+                  <Label layoutX="14.0" layoutY="46.0" text="Arquivos:" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="46.0" />
+                  <FlowPane alignment="CENTER" hgap="20.0" layoutX="674.0" layoutY="536.0" prefHeight="55.0" prefWidth="202.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#playMediaFile" text="Play" />
+                        <Button mnemonicParsing="false" onAction="#pauseMediaFile" text="Pause" />
+                        <Button mnemonicParsing="false" onAction="#muteMediaFile" text="Mute" />
+                     </children>
+                  </FlowPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <FlowPane alignment="CENTER" hgap="30.0" prefHeight="40.0" prefWidth="890.0" rowValignment="TOP" BorderPane.alignment="CENTER">
+         <children>
+            <Button id="0" mnemonicParsing="false" onAction="#swapPaneView" text="Status" />
+            <Button id="1" mnemonicParsing="false" onAction="#swapPaneView" text="Youtube" />
+            <Button id="2" mnemonicParsing="false" onAction="#swapPaneView" text="Media Video" />
+            <Button id="3" disable="true" mnemonicParsing="false" onAction="#swapPaneView" text="Media Audio" />
+            <Button id="4" disable="true" mnemonicParsing="false" onAction="#swapPaneView" text="Compartilhar Tela" />
+            <Button id="5" disable="true" mnemonicParsing="false" onAction="#swapPaneView" text="Compartilhar Audio" />
+         </children>
+      </FlowPane>
+   </top>
+</BorderPane>
