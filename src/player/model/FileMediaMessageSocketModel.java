@@ -4,9 +4,7 @@ public class FileMediaMessageSocketModel extends MessageSocketModel{
 
 	private String path;
 	
-	private String fileName;
-	
-	
+	private String fileName;	
 	
 	public FileMediaMessageSocketModel() {
 		super();

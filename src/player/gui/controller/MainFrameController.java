@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,18 +13,22 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import player.global.Instances;
 import player.interfaces.SocketEventListener;
+import player.model.ChangeStageSocketModel;
+import player.model.CommandMediaMessageSocketModel;
 import player.model.CommandsMedia;
 import player.model.FileMediaMessageSocketModel;
 import player.model.MediaMessageSocketModel;
 import player.model.MessageSocketModel;
-import player.model.StatusMessageSocketModel;
+import player.model.RequestFileListMediaSocketModel;
+import player.model.SystemCommandMessageSocketModel;
+import player.model.SystemCommands;
 import player.model.YoutubeMessageSocketModel;
 import player.model.YoutubeMessageSocketModel.Commands;
 
@@ -70,26 +75,23 @@ public class MainFrameController implements SocketEventListener {
 
 	@FXML
 	void muteMediaFile(ActionEvent event) {
-		sendMediaMessage(CommandsMedia.MUTE);
+		sendMediaCommandMessage(CommandsMedia.MUTE);
 	}
 
 	@FXML
 	void pauseMediaFile(ActionEvent event) {
-		sendMediaMessage(CommandsMedia.STOP);
+		sendMediaCommandMessage(CommandsMedia.STOP);
 	}
 
 	@FXML
 	void playMediaFile(ActionEvent event) {
-		sendMediaMessage(CommandsMedia.PLAY);
+		sendMediaCommandMessage(CommandsMedia.PLAY);
 	}
 
 	@FXML
 	void updateMediaFileList(ActionEvent event) {
-		mediaFilesList.getItems().clear();
-		FileMediaMessageSocketModel fileMedia = new FileMediaMessageSocketModel();
-		fileMedia.setFileName("null");
-		fileMedia.setPath("null");
-		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(fileMedia));
+		mediaFilesList.getItems().clear();		
+		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(new RequestFileListMediaSocketModel()));
 	}
 
 	@FXML
@@ -187,6 +189,8 @@ public class MainFrameController implements SocketEventListener {
 
 		ipTextField.setText(Instances.socketService.getHost());
 
+		mediaFilesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
 	}
 
 	@Override
@@ -238,34 +242,69 @@ public class MainFrameController implements SocketEventListener {
 	}
 
 	@FXML
-	void requestIdleView(ActionEvent event) {
-		StatusMessageSocketModel message = new StatusMessageSocketModel();
-		message.setStatus("IDLE");
-		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(message));
+	void runMediaFile(ActionEvent event) {
+		sendMediaMessage(mediaFilesList.getSelectionModel().getSelectedItems());
+	}
 
+	private void sendMediaMessage(ObservableList<FileMediaMessageSocketModel> selectedItems) {
+		// TODO Auto-generated method stub
+		selectedItems.forEach((fileMedia) -> {
+			sendMediaMessage(fileMedia);
+		});
+	}
+
+	private void sendMediaMessage(FileMediaMessageSocketModel fileMedia) {
+		MediaMessageSocketModel mediaMessage = new MediaMessageSocketModel();
+		mediaMessage.setPath(fileMedia.getPath());
+		mediaMessage.setFileName(fileMedia.getFileName());		
+
+		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(mediaMessage));
+	}
+	
+	private void sendMediaCommandMessage(CommandsMedia command) {
+		CommandMediaMessageSocketModel commandMessage = new CommandMediaMessageSocketModel();
+		commandMessage.setCommand(command);
+		
+		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(commandMessage));
+	}
+
+
+	@FXML
+	void nextMediaFile(ActionEvent event) {
+		sendMediaCommandMessage(CommandsMedia.NEXT);
 	}
 
 	@FXML
 	void requestTurnOff(ActionEvent event) {
+		SystemCommandMessageSocketModel systemCommand = new SystemCommandMessageSocketModel();
+		systemCommand.setCommand(SystemCommands.OFF);
+		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(systemCommand));
+	}
+
+	@FXML
+	void requestIdleView(ActionEvent event) {
+		requestChangeView(0);
 
 	}
 
 	@FXML
-	void runMediaFile(MouseEvent event) {
-		if(event.getClickCount() > 2 && event.getButton() == MouseButton.PRIMARY) {
-			sendMediaMessage(CommandsMedia.RUN);			
+	void requestMediaView(MouseEvent event) {
+		if (event.getClickCount() == 2) {
+			requestChangeView(2);
 		}
-		
-	}
-	
-	private void sendMediaMessage(CommandsMedia command) {
-		FileMediaMessageSocketModel fileMedia = mediaFilesList.getSelectionModel().getSelectedItem();
-		MediaMessageSocketModel mediaMessage = new MediaMessageSocketModel();
-		mediaMessage.setPath(fileMedia.getPath());
-		mediaMessage.setFileName(fileMedia.getFileName());
-		mediaMessage.setCommand(command);
-		
-		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(mediaMessage));
 	}
 
+	@FXML
+	void requestYoutubeView(MouseEvent event) {
+		if (event.getClickCount() == 2) {
+			requestChangeView(1);
+		}
+	}
+
+	private void requestChangeView(int stage) {
+		ChangeStageSocketModel message = new ChangeStageSocketModel();
+		message.setStage(stage);
+		Instances.socketService.sendMessage(Instances.messageService.createResponseSocket(message));
+	}
+	
 }

@@ -2,7 +2,7 @@ package player.model;
 
 public enum CommandsMedia {
 	
-	RUN(0), PLAY(1), STOP(2), MUTE(3), NULL(-1);
+	RUN(0), PLAY(1), STOP(2), MUTE(3), NEXT(4),NULL(-1);
 
 	private int id;
 

@@ -19,7 +19,8 @@ public class SocketService {
 
 	private Socket socket;
 
-	//ip note = "192.168.100.6"
+	// ip note = "192.168.100.6"
+	
 	//private String host = "192.168.100.6";
 	private String host = "127.0.0.1";
 
@@ -30,7 +31,7 @@ public class SocketService {
 	private BufferedReader input;
 
 	private ArrayList<SocketEventListener> eventListener = new ArrayList<>();
-	
+
 	private boolean alive;
 
 	public void init() {
@@ -40,13 +41,12 @@ public class SocketService {
 			socket = new Socket(host, port);
 
 			connectionStatusChanged(CONNECTIONSTATUS.CONNECTED);
-			
 
 			output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 			alive = true;
-			
+
 			waitMessage();
 
 		} catch (IOException e) {
@@ -66,6 +66,12 @@ public class SocketService {
 				System.out.println("Aguardando msg");
 				code = input.read();
 				System.out.println("Cliente codigo: " + code);
+				
+				if (code == -1) {
+					close();
+					continue;
+				}
+
 				ProcessedMessageSocketModel processedMessage = Instances.messageService.processMessageReceived(code,
 						input);
 
@@ -115,8 +121,8 @@ public class SocketService {
 	}
 
 	public void sendMessage(ResponseSocketModel message) {
-		try {			
-			message.sendResponse(output);			
+		try {
+			message.sendResponse(output);
 			output.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -22,7 +22,7 @@
                   <CheckBox fx:id="isEmbedCheckBox" layoutX="16.0" layoutY="48.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="87.0" text="Embed" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="48.0" />
                   <Button layoutX="815.0" layoutY="566.0" mnemonicParsing="false" onAction="#sendYoutube" text="Enviar" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
                   <ProgressBar fx:id="sendVideoProgressBar" layoutX="16.0" layoutY="570.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="95.0" />
-                  <ButtonBar fx:id="commandBarYoutube" disable="true" layoutX="16.0" layoutY="488.0" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                  <ButtonBar fx:id="commandBarYoutube" layoutX="16.0" layoutY="488.0" nodeOrientation="LEFT_TO_RIGHT" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
                     <buttons>
                       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#playYoutube" text="Play/Pause" />
                         <Button mnemonicParsing="false" onAction="#muteYoutube" text="Mute" />
@@ -46,14 +46,16 @@
             </AnchorPane>
             <AnchorPane fx:id="mediaPane" layoutX="67.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <ListView fx:id="mediaFilesList" layoutX="14.0" layoutY="73.0" onMouseClicked="#runMediaFile" prefHeight="420.0" prefWidth="862.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="73.0" />
-                  <Button layoutX="813.0" layoutY="504.0" mnemonicParsing="false" onAction="#updateMediaFileList" text="Atualizar" />
+                  <ListView fx:id="mediaFilesList" layoutX="14.0" layoutY="73.0" prefHeight="420.0" prefWidth="862.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="73.0" />
+                  <Button layoutX="813.0" layoutY="42.0" mnemonicParsing="false" onAction="#updateMediaFileList" text="Atualizar" />
+                  <Button layoutX="769.0" layoutY="511.0" mnemonicParsing="false" onAction="#runMediaFile" text="Adicionar Playlist" />
                   <Label layoutX="14.0" layoutY="46.0" text="Arquivos:" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="46.0" />
-                  <FlowPane alignment="CENTER" hgap="20.0" layoutX="674.0" layoutY="536.0" prefHeight="55.0" prefWidth="202.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                  <FlowPane alignment="CENTER" hgap="20.0" layoutX="194.0" layoutY="536.0" prefHeight="55.0" prefWidth="503.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="193.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#playMediaFile" text="Play" />
                         <Button mnemonicParsing="false" onAction="#pauseMediaFile" text="Pause" />
                         <Button mnemonicParsing="false" onAction="#muteMediaFile" text="Mute" />
+                        <Button mnemonicParsing="false" onAction="#nextMediaFile" text="Next" />
                      </children>
                   </FlowPane>
                </children>
@@ -65,8 +67,8 @@
       <FlowPane alignment="CENTER" hgap="30.0" prefHeight="40.0" prefWidth="890.0" rowValignment="TOP" BorderPane.alignment="CENTER">
          <children>
             <Button id="0" mnemonicParsing="false" onAction="#swapPaneView" text="Status" />
-            <Button id="1" mnemonicParsing="false" onAction="#swapPaneView" text="Youtube" />
-            <Button id="2" mnemonicParsing="false" onAction="#swapPaneView" text="Media Video" />
+            <Button id="1" mnemonicParsing="false" onAction="#swapPaneView" onMouseClicked="#requestYoutubeView" text="Youtube" />
+            <Button id="2" mnemonicParsing="false" onAction="#swapPaneView" onMouseClicked="#requestMediaView" text="Media Video" />
             <Button id="3" disable="true" mnemonicParsing="false" onAction="#swapPaneView" text="Media Audio" />
             <Button id="4" disable="true" mnemonicParsing="false" onAction="#swapPaneView" text="Compartilhar Tela" />
             <Button id="5" disable="true" mnemonicParsing="false" onAction="#swapPaneView" text="Compartilhar Audio" />
